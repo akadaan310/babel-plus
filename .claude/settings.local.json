@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem *)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Abed Kadaan\\\\Desktop\\\\Projects\\\\babel-plus\" -Recurse -Force | Select-Object FullName | ForEach-Object { $_.FullName })",
+      "Bash(npx next *)",
+      "Bash(Copy-Item *)",
+      "PowerShell(New-Item *)",
+      "PowerShell(Copy-Item *)",
+      "WebFetch(domain:unsplash.com)"
+    ]
+  }
+}
