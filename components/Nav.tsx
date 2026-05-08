@@ -17,9 +17,11 @@ export default function Nav() {
     <nav className="site-nav">
       <div className="site-nav-inner">
         <Link href="/" className="brand">
-          <span className="brand-mark">
-            Babel Plus
-          </span>
+          <img
+            src="/logo.png"
+            alt="Babel Plus LLC"
+            style={{ height: 104, width: 'auto', display: 'block' }}
+          />
         </Link>
         <ul className="nav-links">
           {NAV.map((n) => (
