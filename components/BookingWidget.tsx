@@ -36,6 +36,8 @@ export default function BookingWidget() {
   const [time, setTime] = useState<string | null>(null)
   const [step, setStep] = useState<'schedule' | 'details' | 'done'>('schedule')
   const [details, setDetails] = useState({ name: '', email: '', phone: '', note: '' })
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState(false)
 
   const monthName = new Date(view.y, view.m, 1).toLocaleString('en-US', {
     month: 'long',
@@ -74,7 +76,7 @@ export default function BookingWidget() {
           <p className="body-text" style={{ marginTop: 12 }}>
             We&rsquo;ve sent a confirmation to{' '}
             <strong style={{ color: 'var(--ink)' }}>{details.email}</strong>.
-            An attorney will call you on{' '}
+            We will call you on{' '}
             <strong style={{ color: 'var(--ink)' }}>{formatDate(date)}</strong> at{' '}
             <strong style={{ color: 'var(--ink)' }}>{time}</strong>.
           </p>
@@ -274,18 +276,47 @@ export default function BookingWidget() {
             >
               Back
             </button>
+            {submitError && (
+              <p style={{ color: 'var(--accent)', fontFamily: 'var(--mono)', fontSize: 11, margin: 0 }}>
+                Something went wrong. Please try again.
+              </p>
+            )}
             <button
               className="btn btn-accent btn-arrow"
               style={{
                 flex: 1,
                 justifyContent: 'center',
-                opacity: details.name && details.email && details.phone ? 1 : 0.45,
-                cursor: details.name && details.email && details.phone ? 'pointer' : 'not-allowed',
+                opacity: details.name && details.email && details.phone && !submitting ? 1 : 0.45,
+                cursor: details.name && details.email && details.phone && !submitting ? 'pointer' : 'not-allowed',
               }}
-              disabled={!details.name || !details.email || !details.phone}
-              onClick={() => setStep('done')}
+              disabled={!details.name || !details.email || !details.phone || submitting}
+              onClick={async () => {
+                setSubmitting(true)
+                setSubmitError(false)
+                try {
+                  const res = await fetch('/api/booking', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      name: details.name,
+                      email: details.email,
+                      phone: details.phone,
+                      note: details.note,
+                      service,
+                      date: formatDate(date),
+                      time,
+                    }),
+                  })
+                  if (!res.ok) throw new Error()
+                  setStep('done')
+                } catch {
+                  setSubmitError(true)
+                } finally {
+                  setSubmitting(false)
+                }
+              }}
             >
-              Confirm booking
+              {submitting ? 'Confirming…' : 'Confirm booking'}
             </button>
           </div>
         </div>

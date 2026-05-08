@@ -7,7 +7,9 @@
       "Bash(Copy-Item *)",
       "PowerShell(New-Item *)",
       "PowerShell(Copy-Item *)",
-      "WebFetch(domain:unsplash.com)"
+      "WebFetch(domain:unsplash.com)",
+      "Bash(mkdir -p \"/mnt/c/Users/Abed Kadaan/Desktop/Projects/babel-plus/app/api/contact\")",
+      "Bash(mkdir -p \"/mnt/c/Users/Abed Kadaan/Desktop/Projects/babel-plus/app/api/booking\")"
     ]
   }
 }
